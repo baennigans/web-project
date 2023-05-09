@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>exam03</title>
+    <script>
+      function textScan() {
+        let text1 = prompt("텍스트를 입력해 주세요");
+        if (text1 === null || text1 === "") {
+          alert("텍스트값을 입력해 주세요!!");
+        }
+      }
+
+      let div = document.createElement('div');
+      div.innerText = text1;
+      document.body.appendChild(div);
+
+
+
+
+
+
+
+
+    </script>
+  </head>
+  <body>
+    <input type="button" value="시작" onclick="textScan()" />
+    <div id="text1"></div>
+    <input type="button" id="bt1" value="빨강">
+  </body>
+</html>
