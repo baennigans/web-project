@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script
+      src="https://code.jquery.com/jquery-3.6.4.js"
+      integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+        $(function (){
+            $("#bluebox")
+              .css("background-color","blue")
+              .addClass("horizontal")
+            $("#greenbox")
+              .css("background-color","green")
+              .addClass("vertical")
+              .addClass("box2");
+            $("#pinkbox")
+              .css("background-color","pink")
+              .addClass("horizontal")
+              .addClass("box3");
+            $("#redbox")
+              .css("background-color","red")
+              .addClass("vertical")
+              .addClass("box4");
+
+        })
+    </script>
+
+    <style>
+        .horizontal {
+            position: absolute;
+            width: 200px;
+            height: 100px;
+            text-align: center;
+            line-height: 100px;
+        }
+        .vertical {
+            position: absolute;
+            width: 100px;
+            height: 200px;
+            text-align: center;
+            line-height: 200px;
+        }
+        .box2 {
+            margin-left: 200px;
+            margin-top: 0px;
+        }
+        .box3 {
+            margin-left: 100px;
+            margin-top: 200px;
+        }
+        .box4 {
+            margin-top: 100px;
+        }
+        #lotte {
+            width: 100px;
+            height: 100px;
+            margin-left: 100px;
+            margin-top: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div id="bluebox">1</div>
+    <div id="greenbox">2</div>
+    <div id="pinkbox">3</div>
+    <div id="redbox">4</div>
+    <img src="../html/롯데.jpg" id="lotte" alt="">
+</body>
+</html>
