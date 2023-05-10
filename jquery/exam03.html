@@ -17,56 +17,35 @@
         $("#inputbutton")
           .click(function () {
             let newpost=prompt('기사를 입력하세요')
-            $('.div5').append('<div>newpost</div>');
+            
         });
 
       });
     </script>
     <style>
-      #div1 {
-        background-color: rgb(59, 89, 152);
-        color: white;
-        width: 300px;
-        height: 70px;
-        line-height: 70px;
-        text-indent: 20px;
-        font-size: 20px;
-      }
-      div2 {
+        #div2 {
         position: absolute;
         background-color: rgba(223, 227, 238);
         width: 300px;
         height: 300px;
         z-index: -1;
       }
-      .post {
+        .post {
         background-color: rgba(255, 255, 255);
         padding: 10px;
         width: 240px;
         margin-left: 20px;
         font-size: 20px;
       }
-      #inputtext {
-        margin-top: 50px;
-        width: 180px;
-        padding: 6px;
-      }
-      #inputbutton {
-        margin-top: 50px;
-        width: 200px;
-        padding: 5px;
-      }
     </style>
   </head>
 
   <body>
-    <div id="div1">기사등록하기</div>
-    <div id="div2"></div>
-    <ul>
-        <div class="post" id="div3">박지성 SBS에서 월드컵보세요</div>
-        <div class="post" id="div4">안정환 MBC죠..</div>
-        <div class="post" id="div5">이영표 KBS는 수신료의 가치를..</div>
-        <input type="button" id="inputbutton" value="기사 등록하기" />
-    </ul>
-  </body>
+      <div class="post" id="div1">기사등록하기</div>
+      <div id="div2"></div>
+      <div class="post" id="div3">박지성 SBS에서 월드컵보세요</div>
+      <div class="post" id="div4">안정환 MBC죠..</div>
+      <div class="post" id="div5">이영표 KBS는 수신료의 가치를..</div>
+      <input type="button" id="inputbutton" value="기사 등록하기" />
+    </body>
 </html>
