@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      src="https://code.jquery.com/jquery-3.6.4.js"
+      integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      let membership = 0;
+      function join() {
+        let outputid = $("#myid").val();
+        let reg_email = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
+        if (!reg_email.test(outputid)) {
+          alert("이메일 형식이 올바르지 않습니다.");
+          return false;
+        }
+
+        let outputpw = $("#mypassword").val();
+        if (outputpw.length < 5) {
+          alert("비밀번호는 5자 이상이어야 합니다.");
+          return false;
+        }
+
+        if ($("input[name=gender]:checked").length < 1) {
+          alert("성별을 선택해 주세요.");
+          return false;
+        }
+
+        if ($("#job").val() < 1){
+            alert("직업을 선택해 주세요.")
+            return false;
+        }
+
+        if ($("input[name=hobby]:checked").length < 3) {
+            alert("취미를 3개이상 선택해 주세요.")
+            return false;
+        }
+
+        alert("회원가입이 완료되었습니다.");
+      }
+
+    </script>
+  </head>
+
+  <body>
+    <form action="" name="myform">
+      <div>아이디</div>
+      <input type="email" name="" id="myid" />
+
+      <div>비밀번호</div>
+      <input type="password" name="" id="mypassword" />
+
+      <div>성별</div>
+      <label><input type="radio" name="gender" id="male" />남자</label>
+      <label><input type="radio" name="gender" id="female" />여자</label>
+
+      <div>직업</div>
+      <select name="job" id="job">
+        <option selected></option>
+        <option value="학생">학생</option>
+        <option value="직장인">직장인</option>
+        <option value="무직">무직</option>
+      </select>
+
+      <div>취미</div>
+      <label><input type="checkbox" name="hobby" id="hobby1" />개발</label>
+      <label><input type="checkbox" name="hobby" id="hobby2" />게임</label>
+      <label><input type="checkbox" name="hobby" id="hobby3" />낚시</label>
+      <label><input type="checkbox" name="hobby" id="hobby4" />운동</label>
+      <label><input type="checkbox" name="hobby" id="hobby5" />독서</label>
+      <label><input type="checkbox" name="hobby" id="hobby6" />음악강상</label><br>
+
+      <input type="button" id="memberbutton" value="회원가입" onclick="join()"/>
+      <input type="reset" value="취소"/>
+    </form>
+  </body>
+</html>
