@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>적 피하기</title>
+    <style>
+        #player {
+            width: 50px;
+            height: 50px;
+            background-color: blue;
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .enemy {
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            position: absolute;
+            top: -20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="player"></div>
+
+    <script>
+        // 플레이어 요소를 가져옵니다.
+        const player = document.getElementById('player');
+
+        // 플레이어의 초기 위치를 설정합니다.
+        let playerPosition = 50;
+        player.style.left = playerPosition + 'px';
+
+        // 플레이어를 움직이는 함수를 정의합니다.
+        function movePlayer(event) {
+            const key = event.key;
+
+            if (key === 'ArrowLeft' && playerPosition > 0) {
+                playerPosition -= 10;
+            } else if (key === 'ArrowRight' && playerPosition < window.innerWidth - 50) {
+                playerPosition += 10;
+            }
+
+            player.style.left = playerPosition + 'px';
+        }
+
+        // 키보드 이벤트 리스너를 추가합니다.
+        window.addEventListener('keydown', movePlayer);
+
+        // 적을 생성하는 함수를 정의합니다.
+        function createEnemy() {
+            const enemy = document.createElement('div');
+            enemy.classList.add('enemy');
+
+            // 적의 초기 위치를 랜덤으로 설정합니다.
+            const enemyPosition = Math.floor(Math.random() * (window.innerWidth - 20));
+            enemy.style.left = enemyPosition + 'px';
+
+            // 적을 아래로 움직이는 애니메이션을 추가합니다.
+            const enemySpeed = Math.floor(Math.random() * (6 - 2)) + 2; // 적의 움직이는 속도
+            enemy.animate([
+                { top: '-20px' },
+                { top: window.innerHeight + 'px' }
+            ], {
+                duration: 3000 / enemySpeed,
+                iterations: 1
+            });
+
+            // 적이 화면에서 사라지면 제거합니다.
+            enemy.addEventListener('animationend', function() {
+                enemy.remove();
+            });
+
+            // 적을 게임 화면에 추가합니다.
+            document.body.appendChild(enemy);
+        }
+
+        // 일정한 간격으로 적을 생성합니다.
+        setInterval(createEnemy, 1000);
+    </script>
+</body>
+</html>

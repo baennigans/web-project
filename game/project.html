@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project</title>
+    <script
+      src="https://code.jquery.com/jquery-3.6.4.js"
+      integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
+      crossorigin="anonymous"
+    ></script>
+
+    <style>
+      #container {
+        position: absolute;
+        width: 800px;
+        height: 400px;
+        border: 1px black solid;
+      }
+      .sliding-background {
+        background: url('../game/background.png');
+        z-index: -100;
+        position: absolute;
+        width: 10000px;
+        height: 400px;
+        opacity: 0.8;
+        animation: slide 20s linear infinite;
+        animation-fill-mode: forwards;
+      }
+      @keyframes slide {
+        0% {
+          transform: translate(0, 0);
+        }
+        100% {
+          transform: translate(-80%, 0);
+        }
+      }
+      #hero {
+        position: absolute;
+        left: 40px;
+        bottom: 30px;
+        width: 100px;
+        height: 100px;
+      }
+      #enemy {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        right: 90px;
+        bottom: 40px;
+        display: none;
+      }
+      #metal {
+        position: absolute;
+        transform: scaleX(-1);
+        width: 100px;
+        height: 100px;
+        bottom: 20px;
+        right: -100px;
+      }
+      #score {
+        float: right;
+      }
+    </style>
+
+    <script>
+      $(function () {
+        const hero = $("#hero");
+        const enemy = $("#enemy");
+        let score = 0;
+
+        gameStart();
+
+        function gameStart() {
+          $("#gameover_screen").hide();
+          setKeyboardEvent();
+          setTimeout(enemyStart,8000);
+          checkGameOver();
+          setTimeout(moveLeft, 3000);
+        }
+
+        const metal = $("#metal");
+
+        function moveLeft() {
+          metal.animate({ left: "-=150px" }, 1000);
+          setTimeout(changeChar, 2000);
+        }
+
+        function changeChar() {
+          metal.attr("src", "../game/metal3.gif");
+          metal.animate({ bottom: "+=100px" })
+               .animate({ bottom: "-=100px" });
+          setTimeout(() => {
+            metal.attr("src", "../game/metal1.gif");
+          }, 2000);
+        }
+
+
+        function enemyStart() {
+          enemy.css("display", "inline");
+          // 속도 조절
+          const speed = getRandomNumber(1000, 2000);
+          // 적이 오른쪽에서 왼쪽으로 이동
+          enemy.animate({ right: "850px" }, speed, "linear", function () {
+            // 점수 올리자
+            score += 100;
+            updateScore(score);
+            // 적 리셋
+            enemy.css("right", "90px");
+            enemyStart();
+          });
+        }
+
+        function getRandomNumber(min, max) {
+          return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function isColliding(el1, el2) {
+          const rect1 = el1.getBoundingClientRect();
+          const rect2 = el2.getBoundingClientRect();
+
+          return !(
+            rect1.bottom < rect2.top + 30 ||
+            rect1.top > rect2.bottom - 30 ||
+            rect1.right < rect2.left + 30 ||
+            rect1.left > rect2.right - 30
+          );
+        }
+
+        function checkGameOver() {
+          setInterval(function () {
+            if (isColliding(hero[0], enemy[0])) {
+              hero.stop();
+              enemy.stop();
+            }
+          }, 1000 / 60);
+        }
+
+        function updateScore(score) {
+          $("#score").text(score);
+        }
+
+        // 키보드 이벤트 정의
+        // 점프 중인지?
+        let isJumping = false;
+        function setKeyboardEvent() {
+          $("html").keydown(function (e) {
+            switch (e.key) {
+              case " ":
+                if (!isJumping) {
+                  jump();
+                }
+                break;
+            }
+          });
+        }
+        function jump() {
+          isJumping = true;
+          hero
+            .animate({ bottom: "+=100px" })
+            .animate({ bottom: "-=100px" }, function () {
+              isJumping = false;
+            });
+        }
+      });
+    </script>
+
+  </head>
+
+  <body>
+
+    <div id="container">
+      <div class="sliding-background"></div>
+      <img id="hero" src="../game/sonic.gif" alt="" />
+      <img id="enemy" src="../game/bullet.png" alt="" />
+      <img id="metal" src="../game/metal2.gif" alt="" />
+      <div id="gameover_screen">
+        Game Over
+        <input type="button" value="재시작" />
+      </div>
+      <div id="score">0</div>
+    </div>
+
+  </body>
+</html>
