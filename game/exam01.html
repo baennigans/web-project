@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>exam01</title>
+    <script
+      src="https://code.jquery.com/jquery-3.6.4.js"
+      integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
+      crossorigin="anonymous"
+    ></script>
+    <style>
+        #container {
+            position: absolute;
+            width: 400px;
+            height: 300px;
+            border: 1px solid black;
+        }
+        #ryan {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            left: 20px;
+            top: 180px;
+            border: 1px solid black;
+            display: none;
+        }
+    </style>
+
+    <script>
+        $(function () {
+            const ryan = $('#ryan');
+            let count = 1;
+
+            gameStart();
+
+            //키보드 이벤트 정의
+            $('html').keydown(function (e) {
+                switch (e.key) {
+                    case 'ArrowRight': moveRight();
+                    break;
+                    case 'ArrowLeft': moveLeft();
+                    break;
+                }
+                console.log(e.key);
+            });
+            
+            function gameStart() {
+                countDown();
+                //3초 있다가 나오기
+                setTimeout(function () {
+                    ryan.show();
+                }, 3000);
+            }
+            
+            function countDown() {
+                let timer = setInterval(function () {
+                    console.log(count);
+                    count--;
+                    if (count < 0) {
+                        // 인터벌 취소
+                        clearInterval(timer);
+                    }
+                }, 1000);
+            }
+
+            function moveRight() {
+                const ryanRightMargin = $('#ryan').css('right').replace('px','');
+                if(ryanRightMargin>0){
+                    ryan.animate({left:'+=10px'},0);
+                }
+            }
+            function moveLeft() {
+                const ryanLeftMargin = $('#ryan').css('left').replace('px','');
+                if(ryanLeftMargin>0){
+                    ryan.animate({left:'-=10px'},0);
+                }
+            }
+
+        });
+
+    </script>
+  </head>
+
+  <body>
+    <div id="container">
+        <img id="ryan" src="../game-project/걷는라이언.gif" alt="">
+    </div>
+  </body>
+</html>
