@@ -19,44 +19,50 @@
         border: 1px black solid;
       }
       .sliding-background {
-        background: url('../game/background.png');
         z-index: -100;
         position: absolute;
-        width: 10000px;
+        width: 800px;
         height: 400px;
         opacity: 0.8;
-        animation: slide 20s linear infinite;
+        animation: slide 2s linear infinite;
         animation-fill-mode: forwards;
+      }
+      #background1 {
+        background: url("../game/background.png");
+      }
+      #background2 {
+        background: url("../game/background.png");
+        left: 800px;
       }
       @keyframes slide {
         0% {
           transform: translate(0, 0);
         }
         100% {
-          transform: translate(-80%, 0);
+          transform: translate(-100%, 0);
         }
       }
-      #hero {
+      #sonic {
         position: absolute;
         left: 40px;
-        bottom: 30px;
+        bottom: 40px;
         width: 100px;
         height: 100px;
       }
-      #enemy {
+      #bullet {
         position: absolute;
         width: 30px;
         height: 30px;
         right: 90px;
-        bottom: 40px;
+        bottom: 60px;
         display: none;
       }
-      #metal {
+      #metalslug {
         position: absolute;
         transform: scaleX(-1);
         width: 100px;
         height: 100px;
-        bottom: 20px;
+        bottom: 30px;
         right: -100px;
       }
       #score {
@@ -66,49 +72,47 @@
 
     <script>
       $(function () {
-        const hero = $("#hero");
-        const enemy = $("#enemy");
+        const sonic = $("#sonic");
+        const bullet = $("#bullet");
+        const metalslug = $("#metalslug");
         let score = 0;
 
         gameStart();
 
         function gameStart() {
-          $("#gameover_screen").hide();
           setKeyboardEvent();
-          setTimeout(enemyStart,8000);
+          setTimeout(enmeyMoveLeft, 3000);
+          setTimeout(bulletStart, 8000);
           checkGameOver();
-          setTimeout(moveLeft, 3000);
         }
 
-        const metal = $("#metal");
-
-        function moveLeft() {
-          metal.animate({ left: "-=150px" }, 1000);
+        function enmeyMoveLeft() {
+          metalslug.animate({ left: "-=150px" }, 1000);
           setTimeout(changeChar, 2000);
         }
 
         function changeChar() {
-          metal.attr("src", "../game/metal3.gif");
-          metal.animate({ bottom: "+=100px" })
-               .animate({ bottom: "-=100px" });
+          metalslug.attr("src", "../game/metalslug3.gif");
+          metalslug
+            .animate({ bottom: "+=100px" })
+            .animate({ bottom: "-=100px" });
           setTimeout(() => {
-            metal.attr("src", "../game/metal1.gif");
+            metalslug.attr("src", "../game/metalslug1.gif");
           }, 2000);
         }
 
-
-        function enemyStart() {
-          enemy.css("display", "inline");
+        function bulletStart() {
+          bullet.css("display", "inline");
           // 속도 조절
           const speed = getRandomNumber(1000, 2000);
           // 적이 오른쪽에서 왼쪽으로 이동
-          enemy.animate({ right: "850px" }, speed, "linear", function () {
+          bullet.animate({ right: "850px" }, speed, "linear", function () {
             // 점수 올리자
             score += 100;
             updateScore(score);
             // 적 리셋
-            enemy.css("right", "90px");
-            enemyStart();
+            bullet.css("right", "90px");
+            bulletStart();
           });
         }
 
@@ -130,9 +134,9 @@
 
         function checkGameOver() {
           setInterval(function () {
-            if (isColliding(hero[0], enemy[0])) {
-              hero.stop();
-              enemy.stop();
+            if (isColliding(sonic[0], bullet[0])) {
+              sonic.stop();
+              bullet.stop();
             }
           }, 1000 / 60);
         }
@@ -143,44 +147,69 @@
 
         // 키보드 이벤트 정의
         // 점프 중인지?
-        let isJumping = false;
+        let isJumpingSonic = false;
         function setKeyboardEvent() {
           $("html").keydown(function (e) {
             switch (e.key) {
+              case "ArrowRight":
+                sonivMoveRight();
+                break;
+              case "ArrowLeft":
+                sonivMoveLeft();
+                break;
               case " ":
-                if (!isJumping) {
-                  jump();
+                if (!isJumpingSonic) {
+                  sonicJump();
                 }
                 break;
             }
           });
         }
-        function jump() {
-          isJumping = true;
-          hero
-            .animate({ bottom: "+=100px" })
-            .animate({ bottom: "-=100px" }, function () {
-              isJumping = false;
+
+        function sonivMoveRight() {
+          const sonicRightMargin = $("#sonic").css("right").replace("px", "");
+          if (sonicRightMargin > 0) {
+            sonic.animate({ left: "+=10px" }, 0);
+          }
+        }
+
+        function sonivMoveLeft() {
+          const sonicLeftMargin = $("#sonic").css("left").replace("px", "");
+          if (sonicLeftMargin > 0) {
+            sonic.animate({ left: "-=10px" }, 0);
+          }
+        }
+
+        function sonicJump() {
+          sonic.attr("src", "../game/sonicjump.gif");
+          isJumpingSonic = true;
+          sonic
+            .animate({ bottom: "+=110px" })
+            .animate({ bottom: "-=110px" }, function () {
+              isJumpingSonic = false;
             });
+          setTimeout(() => {
+            sonic.attr("src", "../game/sonic.gif");
+          }, 700);
         }
       });
     </script>
-
   </head>
 
   <body>
-
     <div id="container">
-      <div class="sliding-background"></div>
-      <img id="hero" src="../game/sonic.gif" alt="" />
-      <img id="enemy" src="../game/bullet.png" alt="" />
-      <img id="metal" src="../game/metal2.gif" alt="" />
+      <div class="sliding-background" id="background1"></div>
+      <div class="sliding-background" id="background2"></div>
+
+      <img class="sliding-backgorund" src="" alt="" />
+      <img id="sonic" src="../game/sonic.gif" alt="" />
+      <img id="bullet" src="../game/bullet.png" alt="" />
+      <img id="metalslug" src="../game/metalslug2.gif" alt="" />
       <div id="gameover_screen">
         Game Over
         <input type="button" value="재시작" />
       </div>
       <div id="score">0</div>
     </div>
-
   </body>
 </html>
