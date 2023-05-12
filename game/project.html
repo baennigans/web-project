@@ -12,6 +12,10 @@
     ></script>
 
     <style>
+      body{
+        position: absolute;
+      }
+
       #container {
         position: absolute;
         width: 800px;
@@ -23,7 +27,7 @@
         position: absolute;
         width: 800px;
         height: 400px;
-        opacity: 0.8;
+        opacity: 0.75;
         animation: slide 2s linear infinite;
         animation-fill-mode: forwards;
       }
@@ -42,6 +46,28 @@
           transform: translate(-100%, 0);
         }
       }
+
+      #scoreboardled {
+        position: absolute;
+        width: 200px;
+        height: 100px;
+        top: -10px;
+        right: 30px;
+      }
+      #score {
+        position: absolute;
+        background-color: black;
+        color: red;
+        font-size: 40px;
+        text-align: end;
+        padding-right: 20px;
+        width: 140px;
+        height: 50px;
+        right: 50px;
+        top: 24px;
+        border-radius: 10%;
+      }
+
       #sonic {
         position: absolute;
         left: 40px;
@@ -51,11 +77,18 @@
       }
       #bullet {
         position: absolute;
-        width: 30px;
-        height: 30px;
+        width: 40px;
+        height: 40px;
         right: 90px;
         bottom: 60px;
         display: none;
+      }
+      #ring {
+        position: absolute;
+        width: 70px;
+        height: 70px;
+        right: -60px;
+        bottom: 150px;
       }
       #metalslug {
         position: absolute;
@@ -65,31 +98,62 @@
         bottom: 30px;
         right: -100px;
       }
+      #gameoverbackground {
+        position: absolute;
+        display: none;
+        z-index: 10;
+        width: 800px;
+        height: 400px;
+        background-color: black;
+        opacity: 0.7;
+      }
+      #gameovergif {
+        position: absolute;
+        width: 600px;
+        left: 90px;
+        display: none;
+        z-index: 20;
+      }
+      #newgame {
+        position: absolute;
+        display: none;
+        z-index: 20;
+        width: 200px;
+        left: 280px;
+        top: 250px;
+      }
       #score {
         float: right;
       }
     </style>
 
     <script>
+      
       $(function () {
         const sonic = $("#sonic");
-        const bullet = $("#bullet");
         const metalslug = $("#metalslug");
+        const bullet = $("#bullet");
+        const ring = $("#ring");
+        const button = $("#newgame");
         let score = 0;
-
+        
         gameStart();
+
 
         function gameStart() {
           setKeyboardEvent();
-          setTimeout(enmeyMoveLeft, 3000);
-          setTimeout(bulletStart, 8000);
+          setTimeout(enmeyMoveLeft, 2000);
+          setTimeout(bulletStart, 7000);
+          setTimeout(ringStart, 8000);
           checkGameOver();
         }
 
+
         function enmeyMoveLeft() {
-          metalslug.animate({ left: "-=150px" }, 1000);
+          metalslug.animate({ left: "-=150px" }, 1500);
           setTimeout(changeChar, 2000);
         }
+
 
         function changeChar() {
           metalslug.attr("src", "../game/metalslug3.gif");
@@ -101,12 +165,13 @@
           }, 2000);
         }
 
+
         function bulletStart() {
           bullet.css("display", "inline");
           // 속도 조절
-          const speed = getRandomNumber(1000, 2000);
+          const bulletSpeed = getRandomNumber(1000, 2000);
           // 적이 오른쪽에서 왼쪽으로 이동
-          bullet.animate({ right: "850px" }, speed, "linear", function () {
+          bullet.animate({ right: "850px" }, bulletSpeed, "linear", function () {
             // 점수 올리자
             score += 100;
             updateScore(score);
@@ -116,47 +181,65 @@
           });
         }
 
+
+        function ringStart(){
+          ring.show();
+          const ringSpeed = getRandomNumber(2000,4000);
+          ring.animate({ right: "850px" }, ringSpeed, "linear", function () {
+            ring.css("right", "-60px");
+            ringStart();
+          });
+        }
+
+
+
+
         function getRandomNumber(min, max) {
           return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
+
         function isColliding(el1, el2) {
           const rect1 = el1.getBoundingClientRect();
           const rect2 = el2.getBoundingClientRect();
-
           return !(
-            rect1.bottom < rect2.top + 30 ||
-            rect1.top > rect2.bottom - 30 ||
-            rect1.right < rect2.left + 30 ||
-            rect1.left > rect2.right - 30
+            rect1.bottom < rect2.top + 40 ||
+            rect1.top > rect2.bottom - 40 ||
+            rect1.right < rect2.left + 40 ||
+            rect1.left > rect2.right - 40
           );
         }
 
+
         function checkGameOver() {
           setInterval(function () {
+            if (isColliding(sonic[0], ring[0])){
+              score += 200;
+              updateScore(score);
+              ring.hide();
+            }
             if (isColliding(sonic[0], bullet[0])) {
               sonic.stop();
               bullet.stop();
+              ring.stop();
+              $("#gameoverbackground").show();
+              $("#gameovergif").show();
+              $("#newgame").show();
             }
           }, 1000 / 60);
         }
+
+        
 
         function updateScore(score) {
           $("#score").text(score);
         }
 
         // 키보드 이벤트 정의
-        // 점프 중인지?
         let isJumpingSonic = false;
         function setKeyboardEvent() {
           $("html").keydown(function (e) {
             switch (e.key) {
-              case "ArrowRight":
-                sonivMoveRight();
-                break;
-              case "ArrowLeft":
-                sonivMoveLeft();
-                break;
               case " ":
                 if (!isJumpingSonic) {
                   sonicJump();
@@ -166,19 +249,6 @@
           });
         }
 
-        function sonivMoveRight() {
-          const sonicRightMargin = $("#sonic").css("right").replace("px", "");
-          if (sonicRightMargin > 0) {
-            sonic.animate({ left: "+=10px" }, 0);
-          }
-        }
-
-        function sonivMoveLeft() {
-          const sonicLeftMargin = $("#sonic").css("left").replace("px", "");
-          if (sonicLeftMargin > 0) {
-            sonic.animate({ left: "-=10px" }, 0);
-          }
-        }
 
         function sonicJump() {
           sonic.attr("src", "../game/sonicjump.gif");
@@ -192,7 +262,12 @@
             sonic.attr("src", "../game/sonic.gif");
           }, 700);
         }
+
       });
+
+      function newGame() {
+            location.reload();
+        }
     </script>
   </head>
 
@@ -201,15 +276,22 @@
       <div class="sliding-background" id="background1"></div>
       <div class="sliding-background" id="background2"></div>
 
-      <img class="sliding-backgorund" src="" alt="" />
-      <img id="sonic" src="../game/sonic.gif" alt="" />
-      <img id="bullet" src="../game/bullet.png" alt="" />
-      <img id="metalslug" src="../game/metalslug2.gif" alt="" />
-      <div id="gameover_screen">
-        Game Over
-        <input type="button" value="재시작" />
+      <div id="scoreboard">
+        <img id="scoreboardled" src="/game/scoreboard2.png" alt="">
+        <div id="score">0</div>
       </div>
-      <div id="score">0</div>
+
+
+      <img id="sonic" src="../game/sonic.gif" alt="" />
+      <img id="metalslug" src="../game/metalslug2.gif" alt="" />
+      <img id="bullet" src="../game/bullet.png" alt="" />
+      <img id="ring" src="/game/ring.gif" alt="" />
+      
+      <div id="gameover_screen">
+        <div id="gameoverbackground"></div>
+        <img id="gameovergif" src="/game/gameover.gif" alt="">
+        <img id="newgame" src="/game/clicktocontinue.png" alt="" onclick="newGame()">
+      </div>
     </div>
   </body>
 </html>
