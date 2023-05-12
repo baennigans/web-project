@@ -10,7 +10,6 @@
       integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
       crossorigin="anonymous"
     ></script>
-
     <style>
       body{
         position: absolute;
@@ -49,6 +48,13 @@
         height: 400px;
         border: 1px black solid;
       }
+      #background1 {
+        background: url("../game/images/background.png");
+      }
+      #background2 {
+        background: url("../game/images/background.png");
+        left: 800px;
+      }
       .sliding-background {
         z-index: -100;
         position: absolute;
@@ -58,13 +64,6 @@
         animation: slide 2s linear infinite;
         animation-fill-mode: forwards;
       }
-      #background1 {
-        background: url("../game/images/background.png");
-      }
-      #background2 {
-        background: url("../game/images/background.png");
-        left: 800px;
-      }
       @keyframes slide {
         0% {
           transform: translate(0, 0);
@@ -73,25 +72,22 @@
           transform: translate(-100%, 0);
         }
       }
-      #scoreboardled {
+      #sonic {
+        z-index: 10;
         position: absolute;
-        width: 200px;
+        left: -100px;
+        bottom: 40px;
+        width: 100px;
         height: 100px;
-        top: -10px;
-        right: 30px;
       }
-      #score {
+      #metalslug {
+        z-index: 10;
         position: absolute;
-        background-color: black;
-        color: red;
-        font-size: 36px;
-        text-align: end;
-        padding-right: 20px;
-        width: 140px;
-        height: 53px;
-        right: 50px;
-        top: 24px;
-        border-radius: 10%;
+        transform: scaleX(-1);
+        width: 180px;
+        height: 200px;
+        bottom: 30px;
+        right: -180px;
       }
       #dragonball {
         z-index: 10;
@@ -101,20 +97,12 @@
         width: 160px;
         height: 180px;
       }
-      #dragonballgif {
+      #dragonballeffect {
         z-index: 50;
         position: absolute;
         display: none;
         width: 800px;
         height: 400px;
-      }
-      #sonic {
-        z-index: 10;
-        position: absolute;
-        left: -100px;
-        bottom: 40px;
-        width: 100px;
-        height: 100px;
       }
       #bullet {
         z-index: 5;
@@ -134,14 +122,28 @@
         right: -60px;
         bottom: 150px;
       }
-      #metalslug {
-        z-index: 10;
+      #score {
         position: absolute;
-        transform: scaleX(-1);
-        width: 180px;
-        height: 200px;
-        bottom: 30px;
-        right: -180px;
+        background-color: black;
+        color: red;
+        font-size: 36px;
+        text-align: end;
+        padding-right: 20px;
+        width: 140px;
+        height: 53px;
+        right: 50px;
+        top: 24px;
+        border-radius: 10%;
+      }
+      #score {
+        float: right;
+      }
+      #scoreboardled {
+        position: absolute;
+        width: 200px;
+        height: 100px;
+        top: -10px;
+        right: 30px;
       }
       #gameoverbackground {
         z-index: 99;
@@ -152,7 +154,7 @@
         background-color: black;
         opacity: 0.7;
       }
-      #gameovergif {
+      #gameovertext {
         z-index: 100;
         position: absolute;
         width: 600px;
@@ -167,9 +169,6 @@
         left: 300px;
         top: 300px;
       }
-      #score {
-        float: right;
-      }
       #inforing {
         position: absolute;
         width: 70px;
@@ -183,7 +182,6 @@
     </style>
 
     <script>
-      
       $(function () {
         const sonic = $("#sonic");
         const metalslug = $("#metalslug");
@@ -195,28 +193,31 @@
         let score = 0;
         
         gameStart();
-
-
+        //
         function gameStart() {
           setKeyboardEvent();
           sonicMoveRight();
           setTimeout(enmeyMoveLeft, 2000);
           setTimeout(bulletStart, 7000);
           setTimeout(ringStart, 8000);
-          checkScore();
+          CollidingResult();
         }
 
-
+        //
         function sonicMoveRight() {
           sonic.animate({ left: "+=150px" }, 1500);
         }
+
+        //
         function enmeyMoveLeft() {
           metalslug.animate({ left: "-=200px" }, 1500);
           metalslug.animate({ left: "+=30px" }, 500);
           setTimeout(changeChar, 2200);
         }
+
+        //
         function dragonballMoveRight() {
-          $("#dragonballgif").hide();
+          $("#dragonballeffect").hide();
           dragonball.animate({ left: "+=400px" }, 1500);
           sonic.animate({ bottom: "40px" }, 1500);
           setTimeout(() => {
@@ -224,38 +225,32 @@
           }, 8000);
         }
 
-
+        //
         function changeChar() {
-          metalslug.attr("src", "../game/images/metalslug3.gif");
+          metalslug.attr("src", "../game/images/metalslug2.gif");
           metalslug.css("width","120px");
           metalslug.css("height","130px");
-          
-
           metalslug
             .animate({ bottom: "+=100px" })
             .animate({ bottom: "-=100px" });
           setTimeout(() => {
             bullet.show();
-            metalslug.attr("src", "../game/images/metalslug1.gif");
+            metalslug.attr("src", "../game/images/metalslug3.gif");
           }, 2000);
         }
 
-
+        //
         function bulletStart() {
-          // 속도 조절
           const bulletSpeed = getRandomNumber(1000, 2000);
-          // 적이 오른쪽에서 왼쪽으로 이동
           bullet.animate({ right: "850px" }, bulletSpeed, "linear", function () {
-            // 점수 올리자
             score += 100;
             updateScore(score);
-            // 적 리셋
             bullet.css("right", "90px");
             bulletStart();
           });
         }
 
-
+        //
         function ringStart(){
           ring.show();
           const ringSpeed = getRandomNumber(2000,4000);
@@ -265,15 +260,13 @@
           });
         }
 
-
-
-
+        //
         function getRandomNumber(min, max) {
           return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
-
-        function isColliding(el1, el2) {
+        //
+        function CollodingCheck(el1, el2) {
           const rect1 = el1.getBoundingClientRect();
           const rect2 = el2.getBoundingClientRect();
           return !(
@@ -283,34 +276,39 @@
             rect1.left > rect2.right - 30
           );
         }
+        
+        //
+        function updateScore(score) {
+          $("#score").text(score);
+        }
 
-
-        function checkScore() {
+        //
+        function CollidingResult() {
           setInterval(function () {
-            if (isColliding(sonic[0], ring[0])){
+            if (CollodingCheck(sonic[0], ring[0])){
               score += 200;
               updateScore(score);
               ring.stop();
               ring.css("right", "-60px");
               ringStart();
             }
-            if (isColliding(sonic[0], bullet[0])) {
+            if (CollodingCheck(sonic[0], bullet[0])) {
               sonic.stop();
               bullet.stop();
               ring.stop();
               gokuchance--;
               $("#gameoverbackground").show();
-              $("#gameovergif").show();
+              $("#gameovertext").show();
               $("#newgame").show();
             }
-            if (isColliding(dragonball[0], ring[0])){
+            if (CollodingCheck(dragonball[0], ring[0])){
               score += 200;
               updateScore(score);
               ring.stop();
               ring.css("right", "-60px");
               ringStart();
             }
-            if (isColliding(dragonball[0], bullet[0])){
+            if (CollodingCheck(dragonball[0], bullet[0])){
               score += 100;
               updateScore(score);
               bullet.stop();
@@ -318,12 +316,6 @@
               bulletStart();
             }
           }, 1000 / 60);
-        }
-
-        
-
-        function updateScore(score) {
-          $("#score").text(score);
         }
 
         // 키보드 이벤트 정의
@@ -339,16 +331,19 @@
               case "m":
                 if(gokuchance===1){
                   gokuchance--;
-                  $("#dragonballgif").show();
-                  sonic.css("bottom","100px");
+                  $("#dragonballeffect").show();
+                  bullet.hide();
                   setTimeout(dragonballMoveRight, 2800);
+                  setTimeout(() => {
+                    bullet.show();
+                  }, 3600);
                   break;
                 }
             }
           });
         }
 
-
+        //
         function sonicJump() {
           sonic.attr("src", "../game/images/sonicjump.gif");
           isJumpingSonic = true;
@@ -364,11 +359,13 @@
 
       });
 
+      //
       function newGame() {
             location.reload();
-        }
+      }
     </script>
   </head>
+
 
   <img class="gamemargin" id="marginleft" src="../game/images/left.png" alt="">
   <img class="gamemargin" id="marginright" src="../game/images/right.png" alt="">
@@ -384,25 +381,23 @@
         <div id="score">0</div>
       </div>
 
-
       <img id="sonic" src="../game/images/sonic.gif" alt="" />
+      <img id="metalslug" src="../game/images/metalslug1.gif" alt="" />
       <img id="dragonball" src="../game/images/dragonball.gif" alt="">
-      <img id="metalslug" src="../game/images/metalslug2.gif" alt="" />
+      <img id="dragonballeffect" src="../game/images/dragonballeffect.gif" alt="">
       <img id="bullet" src="../game/images/bullet.png" alt="" />
       <img id="ring" src="../game/images/ring.gif" alt="" />
 
-      <img id="dragonballgif" src="../game/images/dragonballon.gif" alt="">
-
-      <div id="info">
-      <img id="inforing" src="../game/images/ring.gif" alt="">
-      <img id="infobullet" src="../game/images/bullet.png" alt="">
-      </div>
       
       <div id="gameover_screen">
         <div id="gameoverbackground"></div>
-        <img id="gameovergif" src="../game/images/gameover.gif" alt="">
+        <img id="gameovertext" src="../game/images/gameover.gif" alt="">
         <img id="newgame" src="../game/images/clicktocontinue.png" alt="" onclick="newGame()">
       </div>
+    </div>
+    <div id="infomation">
+      <img id="inforing" src="../game/images/ring.gif" alt="">
+      <img id="infobullet" src="../game/images/bullet.png" alt="">
     </div>
   </body>
 </html>
