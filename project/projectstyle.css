@@ -1,0 +1,247 @@
+#margintop,
+#marginbottom,
+#marginleft,
+#marginright {
+  display: none;
+}
+#margintop {
+  position: absolute;
+  z-index: 200;
+  left: -444px;
+  top: -282px;
+  width: 2597px;
+}
+#marginbottom {
+  position: absolute;
+  z-index: 200;
+  width: 2597px;
+  top: 602px;
+  left: -445px;
+}
+#marginleft {
+  position: absolute;
+  z-index: 200;
+  height: 402px;
+  top: 200px;
+  left: -449px;
+}
+#marginright {
+  position: absolute;
+  z-index: 200;
+  height: 402px;
+  top: 200px;
+  left: 1202px;
+}
+#container {
+  position: absolute;
+  width: 800px;
+  height: 400px;
+  left: 400px;
+  top: 200px;
+  border: 1px black solid;
+}
+#gamestartdisplay {
+  z-index: 300;
+  position: absolute;
+  width: 800px;
+  height: 400px;
+}
+#gamestartlogo {
+  z-index: 300;
+  position: absolute;
+  width: 380px;
+  left: 430px;
+  top: 90px;
+}
+#gamestartbutton {
+  z-index: 300;
+  position: absolute;
+  left: 530px;
+  width: 200px;
+  top: 180px;
+}
+#gamestartclick {
+  z-index: 300;
+  position: absolute;
+  width: 40px;
+  height: 50px;
+  left: 695px;
+  top: 285px;
+}
+#background1 {
+  background: url("../project/images/background.png");
+}
+#background2 {
+  background: url("../project/images/background.png");
+  left: 800px;
+}
+.sliding-background {
+  z-index: -100;
+  position: absolute;
+  width: 800px;
+  height: 400px;
+  opacity: 0.75;
+  animation: slide 2s linear infinite;
+  animation-fill-mode: forwards;
+}
+@keyframes slide {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-100%, 0);
+  }
+}
+#sonic {
+  z-index: 10;
+  position: absolute;
+  left: -100px;
+  bottom: 40px;
+  width: 100px;
+  height: 100px;
+}
+#metalslug {
+  z-index: 10;
+  position: absolute;
+  transform: scaleX(-1);
+  width: 180px;
+  height: 200px;
+  bottom: 30px;
+  right: -180px;
+}
+#zombie {
+  z-index: 1000;
+  position: absolute;
+  transform: scaleX(-1);
+  width: 130px;
+  bottom: 30px;
+  right: -150px;
+}
+#tank {
+  z-index: 5;
+  position: absolute;
+  transform: scaleX(-1);
+  width: 130px;
+  left: -130px;
+  bottom: 30px;
+}
+#attack {
+  z-index: 5;
+  position: absolute;
+  display: none;
+  width: 50px;
+  left: 40px;
+  bottom: 92px;
+}
+#dragonball {
+  z-index: 10;
+  position: absolute;
+  left: -300px;
+  bottom: 40px;
+  width: 160px;
+  height: 180px;
+}
+#dragonballeffect {
+  z-index: 50;
+  position: absolute;
+  display: none;
+  width: 800px;
+  height: 400px;
+}
+#bullet {
+  z-index: 5;
+  position: absolute;
+  z-index: 3;
+  width: 40px;
+  height: 40px;
+  right: 50px;
+  bottom: 60px;
+  display: none;
+}
+#ring {
+  z-index: 5;
+  position: absolute;
+  width: 70px;
+  right: -60px;
+  bottom: 150px;
+}
+#bigring {
+  z-index: 5;
+  position: absolute;
+  width: 250px;
+  right: -200px;
+  bottom: 170px;
+}
+#scoreboardled {
+  position: absolute;
+  width: 200px;
+  height: 100px;
+  top: -10px;
+  right: 30px;
+}
+#score {
+  position: absolute;
+  background-color: black;
+  color: red;
+  font-size: 36px;
+  text-align: end;
+  padding-right: 20px;
+  width: 140px;
+  height: 53px;
+  right: 50px;
+  top: 24px;
+  border-radius: 10%;
+}
+#score2 {
+  z-index: 100;
+  position: absolute;
+  display: none;
+  color: white;
+  font-size: 40px;
+  text-align: center;
+  width: 100%;
+  top: 230px;
+}
+#score3 {
+  z-index: 100;
+  position: absolute;
+  display: none;
+  color: white;
+  font-size: 30px;
+  text-align: center;
+  width: 100%;
+  top: 190px;
+}
+#gameoverbackground {
+  z-index: 99;
+  position: absolute;
+  display: none;
+  width: 800px;
+  height: 400px;
+  background-color: black;
+  opacity: 0.7;
+}
+#gameovertext {
+  z-index: 100;
+  position: absolute;
+  display: none;
+  width: 600px;
+  left: 100px;
+}
+#newgame {
+  z-index: 100;
+  position: absolute;
+  display: none;
+  width: 200px;
+  left: 300px;
+  top: 300px;
+}
+#newgameclick {
+  z-index: 101;
+  position: absolute;
+  display: none;
+  width: 40px;
+  height: 50px;
+  left: 470px;
+  bottom: 30px;
+}

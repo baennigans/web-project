@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project</title>
+    <script
+      src="https://code.jquery.com/jquery-3.6.4.js"
+      integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="projectstyle.css" />
+    <script src="projectutil.js"></script>
+  </head>
+  <body>
+    <img class="gamemargin" id="marginleft" src="../project/images/left.png" alt="" />
+    <img class="gamemargin" id="marginright" src="../project/images/right.png" alt="" />
+    <img class="gamemargin" id="margintop" src="../project/images/top.png" alt="" />
+    <img class="gamemargin" id="marginbottom" src="../project/images/bottom.png" alt="" />
+
+    <div id="container">
+
+      <div id="gamestart_screen">
+        <img id="gamestartdisplay" src="../project/images/gamestartdisplay.gif" alt="" />
+        <img id="gamestartlogo" src="../project/images/soniclogo.png" alt=""/>
+        <img id="gamestartbutton" src="../project/images/gamestartbutton.png" alt="" onclick="firstGame()" />
+        <img id="gamestartclick" src="../project/images/clickmouse.gif" alt="" />
+      </div>
+
+      <div class="sliding-background" id="background1"></div>
+      <div class="sliding-background" id="background2"></div>
+
+      <div id="scoreboard">
+        <img id="scoreboardled" src="../project/images/scoreboard2.png" alt="" />
+        <div id="score">0</div>
+      </div>
+
+      <img id="sonic" src="../project/images/sonic.gif" alt="" />
+      <img id="metalslug" src="../project/images/metalslug1.gif" alt="" />
+      <img id="dragonball" src="../project/images/dragonball.gif" alt="" />
+      <img id="dragonballeffect" src="../project/images/dragonballeffect.gif" alt="" />
+      <img id="zombie" src="../project/images/zombie.gif" alt="">
+      <img id="tank" src="../project/images/tank.gif" alt="">
+      <img id="attack" src="../project/images/attack.gif" alt="">
+      <img id="bullet" src="../project/images/bullet.png" alt="" />
+      <img id="ring" src="../project/images/ring.gif" alt="" />
+      <img id="bigring" src="../project/images/ring.gif" alt="">
+
+      <div id="gameover_screen">
+        <div class="gameover" id="gameoverbackground"></div>
+        <img class="gameover" id="gameovertext" src="../project/images/gameover.gif" alt="" />
+        <div class="gameover" id="score3">score</div>
+        <div class="gameover" id="score2">0</div>
+        <img class="gameover" id="newgame" src="../project/images/clicktocontinue.png" alt="" onclick="newGame()" />
+        <img class="gameover" id="newgameclick" src="../project/images/clickmouse.gif" alt="" />
+      </div>
+
+    </div>
+  </body>
+</html>
