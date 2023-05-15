@@ -11,6 +11,9 @@
       crossorigin="anonymous"
     ></script>
     <style>
+      #margintop,#marginbottom,#marginleft,#marginright {
+        display: none;
+      }
       #margintop {
         position: absolute;
         z-index: 200;
@@ -116,10 +119,26 @@
         bottom: 30px;
         right: -180px;
       }
+      #tank {
+        z-index: 5;
+        position: absolute;
+        transform: scaleX(-1);
+        width: 130px;
+        left: -130px;
+        bottom: 30px;
+      }
+      #attack {
+        z-index: 5;
+        position: absolute;
+        display: none;
+        width: 50px;
+        left: 40px;
+        bottom: 92px;
+      }
       #dragonball {
         z-index: 10;
         position: absolute;
-        left: -160px;
+        left: -300px;
         bottom: 40px;
         width: 160px;
         height: 180px;
@@ -145,9 +164,22 @@
         z-index: 5;
         position: absolute;
         width: 70px;
-        height: 70px;
         right: -60px;
-        bottom: 150px;
+        bottom: 130px;
+      }
+      #bigring {
+        z-index: 5;
+        position: absolute;
+        width: 250px;
+        right: -200px;
+        bottom: 130px;
+      }
+      #scoreboardled {
+        position: absolute;
+        width: 200px;
+        height: 100px;
+        top: -10px;
+        right: 30px;
       }
       #score {
         position: absolute;
@@ -162,12 +194,25 @@
         top: 24px;
         border-radius: 10%;
       }
-      #scoreboardled {
+      #score2 {
+        z-index: 100;
         position: absolute;
-        width: 200px;
-        height: 100px;
-        top: -10px;
-        right: 30px;
+        display: none;
+        color: white;
+        font-size: 40px;
+        text-align: center;
+        width: 100%;
+        top: 230px;
+      }
+      #score3 {
+        z-index: 100;
+        position: absolute;
+        display: none;
+        color: white;
+        font-size: 30px;
+        text-align: center;
+        width: 100%;
+        top: 190px;
       }
       #gameoverbackground {
         z-index: 99;
@@ -226,12 +271,14 @@
         setTimeout(metalslugMoveLeft, 2000);
         setTimeout(bulletStart, 7000);
         setTimeout(ringStart, 8000);
+        setTimeout(bigringStart, 12000);
+        tankMoveRight();
         CollidingResult();
       }
 
       //
       function sonicMoveRight() {
-        $("#sonic").animate({ left: "+=150px" }, 1500);
+        $("#sonic").animate({ left: "+=200px" }, 1500);
       }
 
       //
@@ -242,13 +289,31 @@
       }
 
       //
+      function tankMoveRight() {
+        $("#tank").animate({left: "+=110px"},1500);
+      }
+
+      //
+      function attackMoveRight() {
+        isAttack = true;
+        $("#attack").show();
+        $("#attack").animate({ left: "800px" }, 800, "linear" ,function () {
+          $("#attack").css("left", "40px");
+          $("#attack").hide();
+          isAttack = false;
+        });
+      }
+
+      //
       function dragonballMoveRight() {
         $("#dragonballeffect").hide();
-        $("#dragonball").animate({ left: "+=400px" }, 1500);
-        $("#sonic").animate({ bottom: "40px" }, 1500);
+        $("#dragonball").animate({ left: "+=500px" }, 1500);
         setTimeout(() => {
-          $("#dragonball").animate({ left: "+=600px" }, 1500);
+          $("#dragonball").animate({ left: "+=440px" }, 1500);
         }, 8000);
+        setTimeout(() => {
+          $("#dragonball").hide();
+        }, 9000);
       }
 
       //
@@ -260,9 +325,11 @@
           .animate({ bottom: "+=100px" })
           .animate({ bottom: "-=100px" });
         setTimeout(() => {
-          $("#bullet").show();
           $("#metalslug").attr("src", "../game/images/metalslug3.gif");
         }, 2000);
+        setTimeout(() => {
+          $("#bullet").show();
+        }, 2100);
       }
 
       //
@@ -287,6 +354,16 @@
       }
 
       //
+      function bigringStart(){
+        $("#bigring").show();
+        const bigringSpeed = getRandomNumber(1000,2000);
+        $("#bigring").animate({ right: "850px" }, bigringSpeed, "linear", function () {
+          $("#bigring").css("right", "-200px");
+          setTimeout(bigringStart, 8000);
+        });
+      }
+
+      //
       function getRandomNumber(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
       }
@@ -306,6 +383,7 @@
       //
       function updateScore(score) {
         $("#score").text(score);
+        $("#score2").text(score);
       }
 
       //
@@ -318,11 +396,20 @@
             $("#ring").css("right", "-60px");
             ringStart();
           }
+          if (CollodingCheck($("#sonic")[0], $("#bigring")[0])){
+            score += 1000;
+            updateScore(score);
+            $("#bigring").stop();
+            $("#bigring").css("right", "-200px");
+            setTimeout(bigringStart, 8000);
+          }
           if (CollodingCheck($("#sonic")[0], $("#bullet")[0])) {
             gokuchance--;
             $("#sonic").stop();
             $("#bullet").stop();
             $("#ring").stop();
+            $("#bigring").stop();
+            $("#attack").stop();
             $(".gameover").show();
           }
           if (CollodingCheck($("#dragonball")[0], $("#ring")[0])){
@@ -331,6 +418,13 @@
             $("#ring").stop();
             $("#ring").css("right", "-60px");
             ringStart();
+          }
+          if (CollodingCheck($("#dragonball")[0], $("#bigring")[0])){
+            score += 1000;
+            updateScore(score);
+            $("#bigring").stop();
+            $("#bigring").css("right", "-200px");
+            setTimeout(bigringStart, 8000);
           }
           if (CollodingCheck($("#dragonball")[0], $("#bullet")[0])){
             score += 100;
@@ -344,6 +438,7 @@
 
       // 키보드 이벤트 정의
       let isJumpingSonic = false;
+      let isAttack = false;
       function setKeyboardEvent() {
         $("html").keydown(function (e) {
           switch (e.key) {
@@ -360,9 +455,14 @@
                 setTimeout(dragonballMoveRight, 2800);
                 setTimeout(() => {
                   $("#bullet").show();
-                }, 3600);
+                }, 4100);
                 break;
               }
+            case "r":
+              if(!isAttack) {
+                attackMoveRight();
+              }
+              break;
           }
         });
       }
@@ -406,10 +506,10 @@
     <div id="container">
 
       <div id="gamestart_screen">
-        <img class="gamestart" id="gamestartdisplay" src="../game/images/gamestartdisplay.gif" alt="" />
-        <img class="gamestart" id="gamestartlogo" src="../game/images/soniclogo.png" alt=""/>
-        <img class="gamestart" id="gamestartbutton" src="../game/images/gamestartbutton.png" alt="" onclick="firstGame()" />
-        <img class="gamestart" id="gamestartclick" src="../game/images/clickmouse.gif" alt="" />
+        <img id="gamestartdisplay" src="../game/images/gamestartdisplay.gif" alt="" />
+        <img id="gamestartlogo" src="../game/images/soniclogo.png" alt=""/>
+        <img id="gamestartbutton" src="../game/images/gamestartbutton.png" alt="" onclick="firstGame()" />
+        <img id="gamestartclick" src="../game/images/clickmouse.gif" alt="" />
       </div>
 
       <div class="sliding-background" id="background1"></div>
@@ -424,12 +524,17 @@
       <img id="metalslug" src="../game/images/metalslug1.gif" alt="" />
       <img id="dragonball" src="../game/images/dragonball.gif" alt="" />
       <img id="dragonballeffect" src="../game/images/dragonballeffect.gif" alt="" />
+      <img id="tank" src="../game/images/tank.gif" alt="">
+      <img id="attack" src="../game/images/attack.gif" alt="">
       <img id="bullet" src="../game/images/bullet.png" alt="" />
       <img id="ring" src="../game/images/ring.gif" alt="" />
+      <img id="bigring" src="../game/images/ring.gif" alt="">
 
       <div id="gameover_screen">
         <div class="gameover" id="gameoverbackground"></div>
         <img class="gameover" id="gameovertext" src="../game/images/gameover.gif" alt="" />
+        <div class="gameover" id="score3">score</div>
+        <div class="gameover" id="score2">0</div>
         <img class="gameover" id="newgame" src="../game/images/clicktocontinue.png" alt="" onclick="newGame()" />
         <img class="gameover" id="newgameclick" src="../game/images/clickmouse.gif" alt="" />
       </div>
