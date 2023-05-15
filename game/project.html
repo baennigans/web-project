@@ -11,41 +11,40 @@
       crossorigin="anonymous"
     ></script>
     <style>
-      body{
-        position: absolute;
-        left: 400px;
-        top: 200px;
-      }
       #margintop {
         position: absolute;
         z-index: 200;
+        left: -444px;
+        top: -282px;
         width: 2597px;
-        left: -844px;
-        top: -484px;
       }
       #marginbottom {
         position: absolute;
         z-index: 200;
         width: 2597px;
-        left: -845px;
-        top: 402px;
+        top: 602px;
+        left: -445px;
       }
       #marginleft {
         position: absolute;
         z-index: 200;
-        left: -849px;
         height: 402px;
+        top: 200px;
+        left: -449px;
       }
       #marginright {
         position: absolute;
         z-index: 200;
         height: 402px;
-        left: 802px;
+        top: 200px;
+        left: 1202px;
       }
       #container {
         position: absolute;
         width: 800px;
         height: 400px;
+        left: 400px;
+        top: 200px;
         border: 1px black solid;
       }
       #background1 {
@@ -168,6 +167,15 @@
         width: 200px;
         left: 300px;
         top: 300px;
+      }
+      #newgameclick{
+        z-index: 101;
+        position: absolute;
+        display: none;
+        width: 40px;
+        height: 50px;
+        left: 470px;
+        bottom: 30px;
       }
       #inforing {
         position: absolute;
@@ -297,9 +305,7 @@
               bullet.stop();
               ring.stop();
               gokuchance--;
-              $("#gameoverbackground").show();
-              $("#gameovertext").show();
-              $("#newgame").show();
+              $(".gameover").show();
             }
             if (CollodingCheck(dragonball[0], ring[0])){
               score += 200;
@@ -390,9 +396,10 @@
 
       
       <div id="gameover_screen">
-        <div id="gameoverbackground"></div>
-        <img id="gameovertext" src="../game/images/gameover.gif" alt="">
-        <img id="newgame" src="../game/images/clicktocontinue.png" alt="" onclick="newGame()">
+        <div class="gameover" id="gameoverbackground"></div>
+        <img class="gameover" id="gameovertext" src="../game/images/gameover.gif" alt="">
+        <img class="gameover" id="newgame" src="../game/images/clicktocontinue.png" alt="" onclick="newGame()">
+        <img class="gameover" id="newgameclick" src="../game/images/clickmouse.gif" alt="">
       </div>
     </div>
     <div id="infomation">
