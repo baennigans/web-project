@@ -1,3 +1,17 @@
+#bae1 {
+  z-index: 1000;
+  position: absolute;
+  color: white;
+  top: -160px;
+  left: -390px;
+}
+#bae2 {
+  z-index: 1000;
+  position: absolute;
+  color: white;
+  top: -190px;
+  left: -390px;
+}
 #margintop {
   position: absolute;
   z-index: 200;
