@@ -110,30 +110,6 @@
   bottom: 30px;
   right: -180px;
 }
-#zombie {
-  z-index: 4;
-  position: absolute;
-  transform: scaleX(-1);
-  width: 130px;
-  bottom: 30px;
-  right: -150px;
-}
-#tank {
-  z-index: 4;
-  position: absolute;
-  transform: scaleX(-1);
-  width: 130px;
-  left: -130px;
-  bottom: 30px;
-}
-#attack {
-  z-index: 4;
-  position: absolute;
-  display: none;
-  width: 50px;
-  left: 40px;
-  bottom: 92px;
-}
 #dragonball {
   z-index: 10;
   position: absolute;
@@ -172,6 +148,30 @@
   width: 250px;
   right: -200px;
   bottom: 170px;
+}
+#zombie {
+  z-index: 4;
+  position: absolute;
+  transform: scaleX(-1);
+  width: 130px;
+  bottom: 30px;
+  right: -150px;
+}
+#tank {
+  z-index: 4;
+  position: absolute;
+  transform: scaleX(-1);
+  width: 130px;
+  left: -130px;
+  bottom: 30px;
+}
+#attack {
+  z-index: 4;
+  position: absolute;
+  display: none;
+  width: 50px;
+  left: 40px;
+  bottom: 92px;
 }
 #scoreboardled {
   position: absolute;

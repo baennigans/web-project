@@ -1,11 +1,11 @@
 let score = 0;
 // 손오공찬스 플레이당 1회
 let gokuchance = 1;
-// 탱크가 움직였는지
+// 탱크가 움직였는가
 let isTankMove = false;
-// 공격이 나가고있는지
+// 공격이 나가고있는가
 let isAttack = false;
-// 소닉이 점프하고있는지
+// 소닉이 점프하고있는가
 let isJumpingSonic = false;
 
 // 스타트나 뉴게임 버튼을 누르면 실행되는 게임시작함수
@@ -93,7 +93,7 @@ function tankMoveRight() {
   $("#tank").animate({ left: "+=110px" }, 1500);
 }
 
-// 좀비가 오->왼 으로 이동
+// 좀비가 오->왼 으로 이동후 제자리로
 function zombieMoveLeft() {
   $("#zombie").animate({ left: "-=1100px" }, 11000, "linear", function () {
     $("#zombie").css("left", "800px");
@@ -101,7 +101,7 @@ function zombieMoveLeft() {
   });
 }
 
-// 공격이 왼->오 로 이동후 제자리로
+// 탱크공격이 왼->오 로 이동후 제자리로
 function attackMoveRight() {
   isAttack = true;
   $("#attack").show();
@@ -116,11 +116,12 @@ function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// 엘리먼트 두개 충돌하는지 확인
+// 엘리먼트끼리 충돌하는지 확인하기
 function CollodingCheck(el1, el2) {
   const rect1 = el1.getBoundingClientRect();
   const rect2 = el2.getBoundingClientRect();
   return !(
+    // 박스크기 널널하게
     rect1.bottom < rect2.top + 25 ||
     rect1.top > rect2.bottom - 25 ||
     rect1.right < rect2.left + 25 ||
@@ -129,10 +130,10 @@ function CollodingCheck(el1, el2) {
 }
 
 function updateScore(score) {
-  // 스코어 득점에 따른 표시
+  // 스코어 득점에 따른 스코어보드 표시 업데이트
   $("#score").text(score);
   $("#score2").text(score);
-  // 2000점 넘어갈 시 탱크와 좀비 등장
+  // 2000점 넘어갈 때 탱크와 좀비 등장
   if (score >= 2000 && !isTankMove) {
     tankMoveRight();
     zombieMoveLeft();
@@ -141,9 +142,9 @@ function updateScore(score) {
 
 // 여러 항목들 충돌시 점수 및 위치
 function CollidingResult() {
-  // 충돌이 있는지 계속 확인
+  // 충돌이 있는지 계속 확인하기
   setInterval(function () {
-    //소닉과 링 충돌 시 점수200+링 제자리에서 다시출발
+    // 소닉과 링 충돌 시 점수 +200, 링 제자리에서 다시출발
     if (CollodingCheck($("#sonic")[0], $("#ring")[0])) {
       score += 200;
       updateScore(score);
@@ -151,7 +152,7 @@ function CollidingResult() {
       $("#ring").css("right", "-60px");
       ringStart();
     }
-    //소닉과 빅링 충돌시 점수1000+빅링 제자리에서 다시출발
+    // 소닉과 빅링 충돌시 점수 +1000, 빅링 제자리에서 다시출발
     if (CollodingCheck($("#sonic")[0], $("#bigring")[0])) {
       score += 1000;
       updateScore(score);
@@ -159,7 +160,7 @@ function CollidingResult() {
       $("#bigring").css("right", "-200px");
       setTimeout(bigringStart, 8000);
     }
-    //소닉과 총알 충돌시 움직이던 항목들 멈추고 게임오버 화면출력
+    // 소닉과 총알 충돌시 움직이던 항목들 모두 멈추고 게임오버 화면출력
     if (CollodingCheck($("#sonic")[0], $("#bullet")[0])) {
       gokuchance--;
       $("#sonic").stop();
@@ -171,7 +172,7 @@ function CollidingResult() {
       $("#attack").stop();
       $(".gameover").show();
     }
-    //소닉과 좀비 충돌시 움직이던 항목들 멈추고 게임오버 화면출력
+    // 소닉과 좀비 충돌시 움직이던 항목들 모두 멈추고 게임오버 화면출력
     if (CollodingCheck($("#sonic")[0], $("#zombie")[0])) {
       gokuchance--;
       $("#sonic").stop();
@@ -183,7 +184,7 @@ function CollidingResult() {
       $("#attack").stop();
       $(".gameover").show();
     }
-    //드래곤볼과 링 충돌시 점수200+링 제자리에서 다시출발
+    // 드래곤볼과 링 충돌시 점수 +200, 링 제자리에서 다시출발
     if (CollodingCheck($("#dragonball")[0], $("#ring")[0])) {
       score += 200;
       updateScore(score);
@@ -191,7 +192,7 @@ function CollidingResult() {
       $("#ring").css("right", "-60px");
       ringStart();
     }
-    //드래곤볼과 총알 충돌시 점수100+총알 제자리에서 다시출발
+    // 드래곤볼과 총알 충돌시 점수 +100, 총알 제자리에서 다시출발
     if (CollodingCheck($("#dragonball")[0], $("#bullet")[0])) {
       score += 100;
       updateScore(score);
@@ -199,7 +200,7 @@ function CollidingResult() {
       $("#bullet").css("right", "90px");
       bulletStart();
     }
-    //좀비와 공격 충돌시 점수150+좀비와 공격 제자리로
+    // 좀비와 탱크공격 충돌시 점수 +150, 좀비 제자리에서 다시출발, 탱크공격 제자리로
     if (CollodingCheck($("#zombie")[0], $("#attack")[0])) {
       score += 150;
       updateScore(score);
@@ -218,6 +219,7 @@ function CollidingResult() {
 function setKeyboardEvent() {
   $("html").keydown(function (e) {
     switch (e.key) {
+      // space 입력시
       case " ":
         // 이미 점프 중이 아니라면 소닉이 점프
         if (!isJumpingSonic) {
@@ -240,7 +242,7 @@ function setKeyboardEvent() {
         }
         break;
       case "f":
-        // 공격 중이 아니고 스코어가 2000점이 넘는상태이면 공격발사
+        // 이미 공격 중이 아니고 스코어가 2000점이 넘은 상태이면 탱크공격 발사
         if (!isAttack && score >= 2000) {
           attackMoveRight();
         }
@@ -274,6 +276,5 @@ function firstGame() {
 
 // new game 버튼 클릭 시 창 새로고침
 function newGame() {
-  $("#gameover_screen").hide();
   location.reload();
 }
