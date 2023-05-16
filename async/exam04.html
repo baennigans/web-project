@@ -11,17 +11,27 @@
       integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
       crossorigin="anonymous"
     ></script>
+  <style>
+    .card {
+      border: 1px solid black;
+      padding: 5px;
+      list-style: none;
+      margin: 2px;
+      background-color: ivory;
+      width: 700px;
+    }
+  </style>
   <script>
     async function loadName() {
         let response = await fetch('https://jsonplaceholder.typicode.com/posts');
         let jsonArray = await response.json();
         for(let i=0; i<jsonArray.length; i++){
-          $('ul').append(`<li onclick="nextPage(${jsonArray[i].id})">${jsonArray[i].title}</li>`);
+          $('ul').append(`<li class="card" onclick="nextPage(${jsonArray[i].id})">${jsonArray[i].title}</li>`);
         }
     }
-
+    
     function nextPage(id) {
-      window.location.href = `https://jsonplaceholder.typicode.com/comments/${id}`;
+      window.location.href = `exam04-2.html?id=${id}`;
     }
   </script>
 </head>
