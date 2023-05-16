@@ -26,6 +26,13 @@
   top: 200px;
   left: 1202px;
 }
+#info {
+  position: absolute;
+  z-index: 201;
+  width: 300px;
+  top: 170px;
+  left: 1360px;
+}
 #container {
   position: absolute;
   width: 800px;
