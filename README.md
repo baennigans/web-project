@@ -10,7 +10,7 @@
 
 ### 🔴 게임 플레이하기
 
-https://baennigans.github.io/web-basic/project/project.html
+https://baennigans.github.io/web-project/project.html
 
 ---
 
